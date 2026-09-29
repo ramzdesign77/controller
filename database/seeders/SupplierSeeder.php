@@ -12,23 +12,23 @@ class SupplierSeeder extends Seeder
         $suppliers = [
             [
                 'name' => 'PT. Indofood',
+                'email' => 'indofood@supplier.test',
                 'phone' => '021-12345678',
-                'address' => 'Jl. Sudirman No. 1, Jakarta'
             ],
             [
                 'name' => 'PT. Unilever',
+                'email' => 'unilever@supplier.test',
                 'phone' => '021-87654321',
-                'address' => 'Jl. Gatot Subroto No. 10, Jakarta'
             ],
             [
                 'name' => 'PT. Mayora',
+                'email' => 'mayora@supplier.test',
                 'phone' => '021-11223344',
-                'address' => 'Jl. Daan Mogot KM 18, Tangerang'
-            ]
+            ],
         ];
 
         foreach ($suppliers as $supplier) {
-            Supplier::create($supplier);
+            Supplier::updateOrCreate(['email' => $supplier['email']], $supplier);
         }
     }
 }
