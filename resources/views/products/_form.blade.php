@@ -23,6 +23,12 @@
         </div>
 
         <div>
+            <label for="barcode" class="mb-2 block text-sm font-medium text-stone-800">Barcode (opsional)</label>
+            <input id="barcode" name="barcode" value="{{ old('barcode', $product->barcode) }}" maxlength="255" class="w-full rounded-md border border-stone-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-primary-700 focus:ring-2 focus:ring-primary-700/20">
+            @error('barcode') <p class="mt-1 text-sm text-red-700">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
             <label for="price" class="mb-2 block text-sm font-medium text-stone-800">Harga (Rp)</label>
             <input id="price" name="price" type="number" min="0" step="0.01" value="{{ old('price', $product->price) }}" required class="w-full rounded-md border border-stone-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-primary-700 focus:ring-2 focus:ring-primary-700/20">
             @error('price') <p class="mt-1 text-sm text-red-700">{{ $message }}</p> @enderror

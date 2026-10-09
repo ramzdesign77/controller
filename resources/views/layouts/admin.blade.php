@@ -11,12 +11,14 @@
         <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
             <a href="{{ route('home') }}" class="flex items-center gap-3 font-semibold tracking-normal text-stone-900">
                 <span class="grid size-10 place-items-center rounded-md bg-primary-700 text-lg text-white">M</span>
-                <span>Minimarket <span class="font-normal text-stone-500">/ Admin</span></span>
+                <span>Minimarket @auth <span class="font-normal text-stone-500">/ {{ auth()->user()->role === 'admin' ? 'Admin' : 'Kasir' }}</span> @endauth</span>
             </a>
             <div class="flex items-center gap-4">
                 @auth
                     @if (auth()->user()->role === 'admin')
                         <a href="{{ route('products.index') }}" class="text-sm font-medium text-stone-700 hover:text-primary-800">Produk</a>
+                    @elseif (auth()->user()->role === 'kasir')
+                        <a href="{{ route('cashier.index') }}" class="text-sm font-medium text-stone-700 hover:text-primary-800">Kasir</a>
                     @endif
                     <span class="hidden text-sm text-stone-500 sm:inline">{{ auth()->user()->name }} · {{ auth()->user()->role }}</span>
                     <form method="POST" action="{{ route('logout') }}">

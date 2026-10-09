@@ -43,7 +43,7 @@ class ProductSeeder extends Seeder
         for ($number = 1; $number <= 200; $number++) {
             [$productName, $category] = $catalog[($number - 1) % count($catalog)];
 
-            Product::updateOrCreate(
+            Product::firstOrCreate(
                 ['name' => sprintf('Demo %03d - %s', $number, $productName)],
                 [
                     'category' => $category,
@@ -51,6 +51,27 @@ class ProductSeeder extends Seeder
                     'stock' => fake()->numberBetween(0, 200),
                     'description' => fake()->sentence(),
                     'is_active' => fake()->boolean(90),
+                ],
+            );
+        }
+
+        $samples = [
+            ['POS-DEMO-001', 'Indomie Goreng', 'Makanan Instan', 3500, 50],
+            ['POS-DEMO-002', 'Aqua 600ml', 'Minuman', 4000, 50],
+            ['POS-DEMO-003', 'Teh Botol Sosro 350ml', 'Minuman', 5000, 40],
+            ['POS-DEMO-004', 'Beras Premium 5kg', 'Sembako', 72000, 25],
+        ];
+
+        foreach ($samples as [$barcode, $name, $category, $price, $stock]) {
+            Product::firstOrCreate(
+                ['barcode' => $barcode],
+                [
+                    'name' => $name,
+                    'category' => $category,
+                    'price' => $price,
+                    'stock' => $stock,
+                    'description' => 'Produk contoh untuk demonstrasi kasir.',
+                    'is_active' => true,
                 ],
             );
         }

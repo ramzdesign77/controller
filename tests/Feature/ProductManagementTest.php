@@ -19,15 +19,14 @@ it('redirects guests to login and forbids cashiers from managing products', func
         ->assertForbidden();
 });
 
-it('sends administrators to products and cashiers to welcome from home', function () {
+it('sends administrators to products and cashiers to the point of sale from home', function () {
     $this->actingAs(User::factory()->create(['role' => 'admin']))
         ->get(route('home'))
         ->assertRedirect(route('products.index'));
 
     $this->actingAs(User::factory()->create(['role' => 'kasir']))
         ->get(route('home'))
-        ->assertOk()
-        ->assertViewIs('welcome');
+        ->assertRedirect(route('cashier.index'));
 });
 
 it('allows an admin to create view update and delete a product', function () {
@@ -40,6 +39,7 @@ it('allows an admin to create view update and delete a product', function () {
 
     $this->post(route('products.store'), [
         'name' => 'Susu UHT',
+        'barcode' => '8991234567890',
         'category' => 'Minuman',
         'image' => UploadedFile::fake()->image('susu.jpg'),
         'price' => '18500.00',
@@ -53,6 +53,7 @@ it('allows an admin to create view update and delete a product', function () {
     $this->assertDatabaseHas('products', [
         'id' => $product->id,
         'name' => 'Susu UHT',
+        'barcode' => '8991234567890',
         'category' => 'Minuman',
         'stock' => 24,
         'is_active' => true,
@@ -126,10 +127,14 @@ it('seeds accounts and 200 demo products without duplicating records', function 
         'role' => 'kasir',
     ]);
     $this->assertDatabaseCount('suppliers', 3);
-    $this->assertDatabaseCount('products', 200);
+    $this->assertDatabaseCount('products', 204);
     $this->assertDatabaseHas('products', [
         'name' => 'Demo 001 - Beras Premium',
         'category' => 'Sembako',
+    ]);
+    $this->assertDatabaseHas('products', [
+        'name' => 'Indomie Goreng',
+        'barcode' => 'POS-DEMO-001',
     ]);
 
     expect(Hash::check('password', User::query()->where('email', 'admin@minimarket.test')->value('password')))->toBeTrue();
